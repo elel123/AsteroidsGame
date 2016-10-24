@@ -1,47 +1,94 @@
 //your variable declarations here
+SpaceShip pieceOfShip;
+int spaceShipSpeed;
 public void setup() 
 {
   //your code here
+  size(800, 800);
+  pieceOfShip = new SpaceShip();
+  spaceShipSpeed = 0;
+
 }
 public void draw() 
 {
   //your code here
+  background(0);
+  pieceOfShip.move();
+  pieceOfShip.show();
+  pieceOfShip.accelerate(spaceShipSpeed);
 }
+public void keyPressed()
+{
+  if(key == 'a')
+  {
+    pieceOfShip.rotate(-15);
+  }
+
+  if(key == 'd')
+  {
+    pieceOfShip.rotate(15);
+  }
+
+  if(key == 'h')
+  {
+
+  }
+}
+
+public void keyReleased()
+{
+    if(key == 'w')
+      spaceShipSpeed = 1;
+
+    if(key == 's')
+      spaceShipSpeed = -1;
+
+}
+
+
+
+
+
 class SpaceShip extends Floater  
 {   
     //your code here
     public SpaceShip()
     {
-      myColor = color(255, 255, 255);
-      corners = 12;
+      myColor = color(255);
+      myCenterX = 400;
+      myCenterY = 400;
+      myDirectionX = 0;
+      myDirectionY = 0;
+      myPointDirection = 0; //in Degrees--not Radians
+      corners = 13;
       xCorners = new int [corners];
       yCorners = new int [corners];
       xCorners[0] = -7;
       yCorners[0] = 7;
       xCorners[1] = -3;
       yCorners[1] = 7;
-      xCorners[2] = ;
-      yCorners[2] = ;  
-      xCorners[3] = ;
-      yCorners[3] = ;  
-      xCorners[4] = ;
-      yCorners[4] = ;  
-      xCorners[5] = ;
-      yCorners[5] = ;  
-      xCorners[6] = ;
-      yCorners[6] = ;  
-      xCorners[7] = ;
-      yCorners[7] = ;  
-      xCorners[8] = ;
-      yCorners[8] = ;  
-      xCorners[9] = ;
-      yCorners[9] = ;  
-      xCorners[10] = ;
-      yCorners[10] = ;  
-      xCorners[11] = ;
-      yCorners[11] = ;  
-      xCorners[12] = ;
-      yCorners[12] = ;  
+      xCorners[2] = 6;
+      yCorners[2] = 2;  
+      xCorners[3] = 8;
+      yCorners[3] = 2;  
+      xCorners[4] = 11;
+      yCorners[4] = 0;  
+      xCorners[5] = 8;
+      yCorners[5] = -2;  
+      xCorners[6] = 6;
+      yCorners[6] = -2;  
+      xCorners[7] = -3;
+      yCorners[7] = -7;  
+      xCorners[8] = -7;
+      yCorners[8] = -7;  
+      xCorners[9] = -5;
+      yCorners[9] = -3;  
+      xCorners[10] = -7;
+      yCorners[10] = -1;  
+      xCorners[11] = -7;
+      yCorners[11] = 1;  
+      xCorners[12] = -5;
+      yCorners[12] = 3;  
     }
     public void setX(int x) {myCenterX = x;}
     public int getX() {return (int)myCenterX;}
@@ -53,6 +100,20 @@ class SpaceShip extends Floater
     public double getDirectionY() {return myDirectionY;}
     public void setPointDirection(int degrees) {myPointDirection = degrees;}
     public double getPointDirection() {return myPointDirection;}
+    
+    public void accelerate (double dAmount)   
+    {          
+      //convert the current direction the floater is pointing to radians    
+      double dRadians =myPointDirection*(Math.PI/180);     
+      //change coordinates of direction of travel    
+      myDirectionX += ((dAmount) * Math.cos(dRadians));    
+      myDirectionY += ((dAmount) * Math.sin(dRadians));    
+
+      if(dAmount > 5)
+      {
+        dAmount = 0;
+      }   
+    } 
 
 
 
@@ -91,7 +152,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     //rotates the floater by a given number of degrees    
     myPointDirection+=nDegreesOfRotation;   
   }   
-  public void move ()   //move the floater in the current direction of travel
+  public void move()   //move the floater in the current direction of travel
   {      
     //change the x and y coordinates by myDirectionX and myDirectionY       
     myCenterX += myDirectionX;    
