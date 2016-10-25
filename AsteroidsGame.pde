@@ -1,13 +1,18 @@
 //your variable declarations here
 SpaceShip pieceOfShip;
 int spaceShipSpeed;
+Star [] twinkle;
 public void setup() 
 {
   //your code here
   size(800, 800);
   pieceOfShip = new SpaceShip();
   spaceShipSpeed = 0;
-
+  twinkle = new Star[500];
+  for(int i = 1; i < twinkle.length; i++)
+  {
+      twinkle[i] = new Star();
+  }
 }
 public void draw() 
 {
@@ -15,7 +20,15 @@ public void draw()
   background(0);
   pieceOfShip.move();
   pieceOfShip.show();
-  pieceOfShip.accelerate(spaceShipSpeed);
+  for(int i = 1; i < twinkle.length; i++)
+  {
+    if(i % 20 == 0)
+    {
+      twinkle[i] = new Star();
+    }
+
+    twinkle[i].show();
+  }
 }
 public void keyPressed()
 {
@@ -31,6 +44,12 @@ public void keyPressed()
 
   if(key == 'h')
   {
+    pieceOfShip.accelerate(0);
+    pieceOfShip.setX((int)(Math.random() * 800));
+    pieceOfShip.setY((int)(Math.random() * 800));
+    pieceOfShip.setPointDirection((int)(Math.random() * 360));
+    pieceOfShip.setDirectionX(0);
+    pieceOfShip.setDirectionY(0);
 
   }
 }
@@ -40,13 +59,37 @@ public void keyReleased()
     if(key == 'w')
       spaceShipSpeed = 1;
 
-    if(key == 's')
+    else if(key == 's')
       spaceShipSpeed = -1;
+
+    else 
+    {
+      spaceShipSpeed = 0;
+    }
+
+
+    pieceOfShip.accelerate(spaceShipSpeed);
+    //fill(255, 0, 0);
+    //triangle(pieceOfShip.getX() - 10, pieceOfShip.getY() - 10, pieceOfShip.getX() - 20, pieceOfShip.getY(), pieceOfShip.getX() - 10, pieceOfShip.getY() + 10);
 
 }
 
 
+class Star 
+{
+  private int myX, myY;
+  public Star()
+  {
+    myX = (int)(Math.random() * 800);
+    myY = (int)(Math.random() * 800);
+  }
 
+  public void show()
+  {
+    fill((int)(Math.random() * 16) + 239, 255, (int)(Math.random() * 255));
+    ellipse(myX, myY, 2, 2);
+  }
+}
 
 
 class SpaceShip extends Floater  
