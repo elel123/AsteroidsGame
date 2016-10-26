@@ -26,10 +26,12 @@ public void draw()
     {
       twinkle[i] = new Star();
     }
-
     twinkle[i].show();
   }
+
+
 }
+
 public void keyPressed()
 {
   if(key == 'a')
@@ -42,7 +44,7 @@ public void keyPressed()
     pieceOfShip.rotate(15);
   }
 
-  if(key == 'h')
+  if(key == ' ')
   {
     pieceOfShip.accelerate(0);
     pieceOfShip.setX((int)(Math.random() * 800));
@@ -60,7 +62,9 @@ public void keyReleased()
       spaceShipSpeed = 1;
 
     else if(key == 's')
+    {
       spaceShipSpeed = -1;
+    }
 
     else 
     {
@@ -71,8 +75,9 @@ public void keyReleased()
     pieceOfShip.accelerate(spaceShipSpeed);
     //fill(255, 0, 0);
     //triangle(pieceOfShip.getX() - 10, pieceOfShip.getY() - 10, pieceOfShip.getX() - 20, pieceOfShip.getY(), pieceOfShip.getX() - 10, pieceOfShip.getY() + 10);
-
 }
+
+
 
 
 class Star 
@@ -87,7 +92,7 @@ class Star
   public void show()
   {
     fill((int)(Math.random() * 16) + 239, 255, (int)(Math.random() * 255));
-    ellipse(myX, myY, 2, 2);
+    ellipse(myX, myY, 1, 1);
   }
 }
 
@@ -156,6 +161,33 @@ class SpaceShip extends Floater
       {
         dAmount = 0;
       }   
+    } 
+
+    public void show ()  //Draws the floater at the current position  
+    { 
+      if(keyPressed && key == ' ')
+      {
+        stroke(myColor, 10); 
+        fill(myColor, 10); 
+      }  
+      else 
+      {
+        stroke(myColor); 
+        fill(myColor);
+      }
+   
+      //convert degrees to radians for sin and cos         
+      double dRadians = myPointDirection*(Math.PI/180);                 
+      int xRotatedTranslated, yRotatedTranslated;    
+      beginShape();         
+      for(int nI = 0; nI < corners; nI++)    
+      {     
+        //rotate and translate the coordinates of the floater using current direction 
+        xRotatedTranslated = (int)((xCorners[nI]* Math.cos(dRadians)) - (yCorners[nI] * Math.sin(dRadians))+myCenterX);     
+        yRotatedTranslated = (int)((xCorners[nI]* Math.sin(dRadians)) + (yCorners[nI] * Math.cos(dRadians))+myCenterY);      
+        vertex(xRotatedTranslated,yRotatedTranslated);    
+      }   
+      endShape(CLOSE);  
     } 
 
 
