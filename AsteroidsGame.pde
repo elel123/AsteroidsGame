@@ -1,7 +1,8 @@
 //your variable declarations here
 SpaceShip pieceOfShip;
-int spaceShipSpeed;
+double spaceShipSpeed;
 Star [] twinkle;
+Asteroid spaceRock;
 public void setup() 
 {
   //your code here
@@ -13,6 +14,8 @@ public void setup()
   {
       twinkle[i] = new Star();
   }
+
+  spaceRock = new Asteroid();
 }
 public void draw() 
 {
@@ -28,20 +31,19 @@ public void draw()
     }
     twinkle[i].show();
   }
-
-
+  //spaceRock.show();
 }
 
 public void keyPressed()
 {
   if(key == 'a')
   {
-    pieceOfShip.rotate(-15);
+    pieceOfShip.rotate(-10);
   }
 
   if(key == 'd')
   {
-    pieceOfShip.rotate(15);
+    pieceOfShip.rotate(10);
   }
 
   if(key == ' ')
@@ -54,25 +56,24 @@ public void keyPressed()
     pieceOfShip.setDirectionY(0);
 
   }
+
+    if(key == 'w')
+      spaceShipSpeed = 0.5;
+
+    else if(key == 's')
+      spaceShipSpeed = -0.5;
+    
+    else 
+      spaceShipSpeed = 0;
+   
+
+
+    pieceOfShip.accelerate(spaceShipSpeed);
 }
 
 public void keyReleased()
 {
-    if(key == 'w')
-      spaceShipSpeed = 1;
 
-    else if(key == 's')
-    {
-      spaceShipSpeed = -1;
-    }
-
-    else 
-    {
-      spaceShipSpeed = 0;
-    }
-
-
-    pieceOfShip.accelerate(spaceShipSpeed);
     //fill(255, 0, 0);
     //triangle(pieceOfShip.getX() - 10, pieceOfShip.getY() - 10, pieceOfShip.getX() - 20, pieceOfShip.getY(), pieceOfShip.getX() - 10, pieceOfShip.getY() + 10);
 }
@@ -94,6 +95,79 @@ class Star
     fill((int)(Math.random() * 16) + 239, 255, (int)(Math.random() * 255));
     ellipse(myX, myY, 1, 1);
   }
+}
+
+class Asteroid extends Floater
+{
+  private int speedOfRotation;
+
+  public Asteroid()
+  {
+    speedOfRotation = (int)(Math.random() * 3) - 1; 
+    myColor = color(0, 0, 255);
+    myCenterX = 400;
+    myCenterY = 400;
+    myDirectionX = 0;
+    myDirectionY = 0;
+    myPointDirection = 0;  
+    corners = 7;
+    xCorners = new int [corners];
+    yCorners = new int [corners]; 
+    xCorners[1] = -35;
+    yCorners[1] = -34;
+    xCorners[2] = -28;
+    yCorners[2] = 30;
+    xCorners[3] = 20;
+    yCorners[3] = 35;
+    xCorners[4] = 46;
+    yCorners[4] = 34;
+    xCorners[5] = 34;
+    yCorners[5] = -34;
+    xCorners[6] = 0;
+    yCorners[6] = -20;
+  }
+
+  public void move()   //move the floater in the current direction of travel
+  {      
+    //change the x and y coordinates by myDirectionX and myDirectionY       
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;     
+
+    //wrap around screen    
+    if(myCenterX >width)
+    {     
+      myCenterX = 0;    
+    }    
+    else if (myCenterX<0)
+    {     
+      myCenterX = width;    
+    }    
+    if(myCenterY >height)
+    {    
+      myCenterY = 0;    
+    }   
+    else if (myCenterY < 0)
+    {     
+      myCenterY = height;    
+    }   
+  } 
+
+  public void rotate()   
+  {     
+    //rotates the floater by a given number of degrees    
+    myPointDirection += speedOfRotation;   
+  }  
+
+  public void setX(int x) {myCenterX = x;}
+  public int getX() {return (int)myCenterX;}
+  public void setY(int y) {myCenterY = y;}
+  public int getY() {return (int)myCenterY;}
+  public void setDirectionX(double x) {myDirectionX = x;}  
+  public double getDirectionX() {return myDirectionX;}
+  public void setDirectionY(double y) {myDirectionY = y;}
+  public double getDirectionY() {return myDirectionY;}
+  public void setPointDirection(int degrees) {myPointDirection = degrees;}
+  public double getPointDirection() {return myPointDirection;}
 }
 
 
@@ -162,6 +236,7 @@ class SpaceShip extends Floater
         dAmount = 0;
       }   
     } 
+
 
     public void show ()  //Draws the floater at the current position  
     { 
