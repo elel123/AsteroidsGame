@@ -185,10 +185,10 @@ class SpaceShip extends Floater
       corners = 13;
       xCorners = new int [corners];
       yCorners = new int [corners];
-      xCorners[0] = -7;
-      yCorners[0] = 7;
+      xCorners[0] = -8;
+      yCorners[0] = 8;
       xCorners[1] = -3;
-      yCorners[1] = 7;
+      yCorners[1] = 8;
       xCorners[2] = 6;
       yCorners[2] = 2;  
       xCorners[3] = 8;
@@ -200,9 +200,9 @@ class SpaceShip extends Floater
       xCorners[6] = 6;
       yCorners[6] = -2;  
       xCorners[7] = -3;
-      yCorners[7] = -7;  
-      xCorners[8] = -7;
-      yCorners[8] = -7;  
+      yCorners[7] = -8;  
+      xCorners[8] = -8;
+      yCorners[8] = -8;  
       xCorners[9] = -5;
       yCorners[9] = -3;  
       xCorners[10] = -7;
