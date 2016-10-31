@@ -2,7 +2,7 @@
 SpaceShip pieceOfShip;
 double spaceShipSpeed;
 Star [] twinkle;
-Asteroid spaceRock;
+Asteroid [] spaceRock;
 public void setup() 
 {
   //your code here
@@ -15,7 +15,11 @@ public void setup()
       twinkle[i] = new Star();
   }
 
-  spaceRock = new Asteroid();
+  for(int i = 1; i < spaceRock.length; i++)
+  {
+    spaceRock[i] = new Asteroid();
+  }
+
 }
 public void draw() 
 {
@@ -31,7 +35,9 @@ public void draw()
     }
     twinkle[i].show();
   }
-  //spaceRock.show();
+  
+  spaceRock.move();
+  spaceRock.show();
 }
 
 public void keyPressed()
@@ -104,58 +110,38 @@ class Asteroid extends Floater
   public Asteroid()
   {
     speedOfRotation = (int)(Math.random() * 3) - 1; 
-    myColor = color(0, 0, 255);
+    myColor = color(102, 51, 0);
     myCenterX = 400;
     myCenterY = 400;
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0;  
-    corners = 7;
+    corners = 6;
     xCorners = new int [corners];
     yCorners = new int [corners]; 
-    xCorners[1] = -35;
-    yCorners[1] = -34;
-    xCorners[2] = -28;
-    yCorners[2] = 30;
-    xCorners[3] = 20;
-    yCorners[3] = 35;
-    xCorners[4] = 46;
-    yCorners[4] = 34;
-    xCorners[5] = 34;
-    yCorners[5] = -34;
-    xCorners[6] = 0;
-    yCorners[6] = -20;
+    xCorners[1] = -10;
+    yCorners[1] = -10;
+    xCorners[2] = -10;
+    yCorners[2] = 10;
+    xCorners[3] = 10;
+    yCorners[3] = 10;
+    xCorners[4] = 10;
+    yCorners[4] = -10;
+    xCorners[5] = -10;
+    yCorners[5] = -10;
+
   }
 
   public void move()   //move the floater in the current direction of travel
-  {      
-    //change the x and y coordinates by myDirectionX and myDirectionY       
-    myCenterX += myDirectionX;    
-    myCenterY += myDirectionY;     
-
-    //wrap around screen    
-    if(myCenterX >width)
-    {     
-      myCenterX = 0;    
-    }    
-    else if (myCenterX<0)
-    {     
-      myCenterX = width;    
-    }    
-    if(myCenterY >height)
-    {    
-      myCenterY = 0;    
-    }   
-    else if (myCenterY < 0)
-    {     
-      myCenterY = height;    
-    }   
+  {   
+    rotate(speedOfRotation);
+    super.move();  
   } 
 
-  public void rotate()   
+  public void rotate(int nDegreesOfRotation)   
   {     
     //rotates the floater by a given number of degrees    
-    myPointDirection += speedOfRotation;   
+    myPointDirection += nDegreesOfRotation;   
   }  
 
   public void setX(int x) {myCenterX = x;}
