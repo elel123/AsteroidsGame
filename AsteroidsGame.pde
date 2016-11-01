@@ -10,6 +10,7 @@ public void setup()
   pieceOfShip = new SpaceShip();
   spaceShipSpeed = 0;
   twinkle = new Star[500];
+  spaceRock = new Asteroid[20];
   for(int i = 1; i < twinkle.length; i++)
   {
       twinkle[i] = new Star();
@@ -18,8 +19,18 @@ public void setup()
   for(int i = 1; i < spaceRock.length; i++)
   {
     spaceRock[i] = new Asteroid();
-  }
+    spaceRock[i].setX((int)(Math.random() * 800));
+    spaceRock[i].setY((int)(Math.random() * 800));
+    if(spaceRock[i].getX() < 400)
+      spaceRock[i].setDirectionX(0.25);
+    else
+      spaceRock[i].setDirectionX(-0.25);
 
+    if(spaceRock[i].getY() < 400)
+      spaceRock[i].setDirectionY(0.25);
+    else
+      spaceRock[i].setDirectionY(-0.25);
+  }
 }
 public void draw() 
 {
@@ -36,8 +47,11 @@ public void draw()
     twinkle[i].show();
   }
   
-  spaceRock.move();
-  spaceRock.show();
+  for(int i = 1; i < spaceRock.length; i++)
+  {
+    spaceRock[i].move();
+    spaceRock[i].show();
+  }
 }
 
 public void keyPressed()
@@ -109,7 +123,16 @@ class Asteroid extends Floater
 
   public Asteroid()
   {
-    speedOfRotation = (int)(Math.random() * 3) - 1; 
+    speedOfRotation = (int)(Math.random() * 4);
+    if(speedOfRotation <= 1)
+    {
+      speedOfRotation = 1;
+    } 
+    else 
+    {
+      speedOfRotation = -1;  
+    }
+
     myColor = color(102, 51, 0);
     myCenterX = 400;
     myCenterY = 400;
