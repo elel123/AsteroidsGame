@@ -139,7 +139,7 @@ class Asteroid extends Floater
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0;  
-    corners = 6;
+    corners = 16;
     xCorners = new int [corners];
     yCorners = new int [corners]; 
     xCorners[1] = -10;
@@ -152,6 +152,30 @@ class Asteroid extends Floater
     yCorners[4] = -10;
     xCorners[5] = -10;
     yCorners[5] = -10;
+    xCorners[6] = ;
+    yCorners[6] = ;
+    xCorners[7] = ;
+    yCorners[7] = ;
+    xCorners[8] = ;
+    yCorners[9] = ;
+    xCorners[9] = ;
+    yCorners[0] = ;
+    xCorners[] = ;
+    yCorners[] = ;
+    xCorners[] = ;
+    yCorners[] = ;
+    xCorners[] = ;
+    yCorners[] = ;
+    xCorners[] = ;
+    yCorners[] = ;
+    xCorners[] = ;
+    yCorners[] = ;
+    xCorners[] = ;
+    yCorners[] = ;
+    xCorners[] = ;
+    yCorners[] = ;
+    xCorners[] = ;
+    yCorners[] = ;
 
   }
 
@@ -232,6 +256,11 @@ class SpaceShip extends Floater
     public void setPointDirection(int degrees) {myPointDirection = degrees;}
     public double getPointDirection() {return myPointDirection;}
     
+    public void crash()
+    {
+      //idk
+    }
+
     public void accelerate (double dAmount)   
     {          
       //convert the current direction the floater is pointing to radians    
