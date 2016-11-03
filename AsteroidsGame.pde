@@ -21,6 +21,7 @@ public void setup()
     spaceRock[i] = new Asteroid();
     spaceRock[i].setX((int)(Math.random() * 800));
     spaceRock[i].setY((int)(Math.random() * 800));
+
     if(spaceRock[i].getX() < 400)
       spaceRock[i].setDirectionX(0.25);
     else
@@ -30,8 +31,8 @@ public void setup()
       spaceRock[i].setDirectionY(0.25);
     else
       spaceRock[i].setDirectionY(-0.25);
-  }
-}
+
+
 public void draw() 
 {
   //your code here
@@ -139,44 +140,25 @@ class Asteroid extends Floater
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0;  
-    corners = 16;
-    xCorners = new int [corners];
-    yCorners = new int [corners]; 
-    xCorners[1] = -10;
-    yCorners[1] = -10;
-    xCorners[2] = -10;
-    yCorners[2] = 10;
-    xCorners[3] = 10;
-    yCorners[3] = 10;
-    xCorners[4] = 10;
-    yCorners[4] = -10;
-    xCorners[5] = -10;
-    yCorners[5] = -10;
-    xCorners[6] = ;
-    yCorners[6] = ;
-    xCorners[7] = ;
-    yCorners[7] = ;
-    xCorners[8] = ;
-    yCorners[9] = ;
-    xCorners[9] = ;
-    yCorners[0] = ;
-    xCorners[] = ;
-    yCorners[] = ;
-    xCorners[] = ;
-    yCorners[] = ;
-    xCorners[] = ;
-    yCorners[] = ;
-    xCorners[] = ;
-    yCorners[] = ;
-    xCorners[] = ;
-    yCorners[] = ;
-    xCorners[] = ;
-    yCorners[] = ;
-    xCorners[] = ;
-    yCorners[] = ;
-    xCorners[] = ;
-    yCorners[] = ;
 
+    if(Math.random() > 0.5)
+    {
+      corners = 15;
+      int[] xS = {28, 34, 22, 0, -8, -22, -30, -34, -28, -24, -12, -4, 6, 22, 36};
+      int[] yS = {6, 24, 32, 34, 36, 34, 22, 4, -8, -18, -32, -28, -32, -22, -2};
+      xCorners = xS;
+      yCorners = yS;
+    }
+    
+    else
+    {
+      corners = 7;
+      int[] xS = {20, 12, 8, -12, -20, -10, 16};
+      int[] yS = {4, 8, 14, 12, 0, -10, -8};
+      xCorners = xS;
+      yCorners = yS;
+    }
+  
   }
 
   public void move()   //move the floater in the current direction of travel
@@ -189,7 +171,8 @@ class Asteroid extends Floater
   {     
     //rotates the floater by a given number of degrees    
     myPointDirection += nDegreesOfRotation;   
-  }  
+  }
+
 
   public void setX(int x) {myCenterX = x;}
   public int getX() {return (int)myCenterX;}
