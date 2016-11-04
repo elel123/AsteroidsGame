@@ -19,8 +19,29 @@ public void setup()
   for(int i = 1; i < spaceRock.length; i++)
   {
     spaceRock[i] = new Asteroid();
-    spaceRock[i].setX((int)(Math.random() * 800));
-    spaceRock[i].setY((int)(Math.random() * 800));
+    if(Math.random() < 0.25)
+    {
+      spaceRock[i].setX((int)(Math.random() * 300));
+      spaceRock[i].setY((int)(Math.random() * 800));
+    }
+
+    else if(Math.random() < 0.33)
+    {
+      spaceRock[i].setX((int)(Math.random() * 300) + 500);
+      spaceRock[i].setY((int)(Math.random() * 800));      
+    }
+
+    else if(Math.random() < 0.5)
+    {
+      spaceRock[i].setX((int)(Math.random() * 800));
+      spaceRock[i].setY((int)(Math.random() * 300));      
+    }
+
+    else
+    {
+      spaceRock[i].setX((int)(Math.random() * 800));
+      spaceRock[i].setY((int)(Math.random() * 300) + 500); 
+    }
 
     if(spaceRock[i].getX() < 400)
       spaceRock[i].setDirectionX(0.25);
@@ -31,8 +52,8 @@ public void setup()
       spaceRock[i].setDirectionY(0.25);
     else
       spaceRock[i].setDirectionY(-0.25);
-
-
+  }
+}
 public void draw() 
 {
   //your code here
@@ -76,6 +97,7 @@ public void keyPressed()
     pieceOfShip.setDirectionX(0);
     pieceOfShip.setDirectionY(0);
 
+
   }
 
     if(key == 'w')
@@ -92,12 +114,6 @@ public void keyPressed()
     pieceOfShip.accelerate(spaceShipSpeed);
 }
 
-public void keyReleased()
-{
-
-    //fill(255, 0, 0);
-    //triangle(pieceOfShip.getX() - 10, pieceOfShip.getY() - 10, pieceOfShip.getX() - 20, pieceOfShip.getY(), pieceOfShip.getX() - 10, pieceOfShip.getY() + 10);
-}
 
 
 
@@ -141,7 +157,7 @@ class Asteroid extends Floater
     myDirectionY = 0;
     myPointDirection = 0;  
 
-    if(Math.random() > 0.5)
+    if(Math.random() < 0.25)
     {
       corners = 15;
       int[] xS = {28, 34, 22, 0, -8, -22, -30, -34, -28, -24, -12, -4, 6, 22, 36};
