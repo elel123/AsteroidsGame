@@ -2,6 +2,7 @@
 SpaceShip pieceOfShip;
 double spaceShipSpeed;
 Star [] twinkle;
+//ArrayList <Asteroid> spaceRock;
 Asteroid [] spaceRock;
 public void setup() 
 {
@@ -10,7 +11,8 @@ public void setup()
   pieceOfShip = new SpaceShip();
   spaceShipSpeed = 0;
   twinkle = new Star[500];
-  spaceRock = new Asteroid[20];
+  //spaceRock = new ArrayList <spaceRock>();
+  spaceRock = new Asteroid[25];
   for(int i = 1; i < twinkle.length; i++)
   {
       twinkle[i] = new Star();
@@ -53,6 +55,45 @@ public void setup()
     else
       spaceRock[i].setDirectionY(-0.25);
   }
+  /*
+  for(int i = 1; i <= 25; i++)
+  {
+    spaceRock.add(new Asteroid();)
+    if(Math.random() < 0.25)
+    {
+      spaceRock[i].setX((int)(Math.random() * 300));
+      spaceRock[i].setY((int)(Math.random() * 800));
+    }
+
+    else if(Math.random() < 0.33)
+    {
+      spaceRock[i].setX((int)(Math.random() * 300) + 500);
+      spaceRock[i].setY((int)(Math.random() * 800));      
+    }
+
+    else if(Math.random() < 0.5)
+    {
+      spaceRock[i].setX((int)(Math.random() * 800));
+      spaceRock[i].setY((int)(Math.random() * 300));      
+    }
+
+    else
+    {
+      spaceRock[i].setX((int)(Math.random() * 800));
+      spaceRock[i].setY((int)(Math.random() * 300) + 500); 
+    }
+
+    if(spaceRock[i].getX() < 400)
+      spaceRock[i].setDirectionX(0.25);
+    else
+      spaceRock[i].setDirectionX(-0.25);
+
+    if(spaceRock[i].getY() < 400)
+      spaceRock[i].setDirectionY(0.25);
+    else
+      spaceRock[i].setDirectionY(-0.25);
+  }
+  */
 }
 public void draw() 
 {
