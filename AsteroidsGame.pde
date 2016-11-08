@@ -2,8 +2,8 @@
 SpaceShip pieceOfShip;
 double spaceShipSpeed;
 Star [] twinkle;
-//ArrayList <Asteroid> spaceRock;
-Asteroid [] spaceRock;
+ArrayList <Asteroid> spaceRock;   //uses Arraylist
+//Asteroid [] spaceRock;
 public void setup() 
 {
   //your code here
@@ -11,89 +11,26 @@ public void setup()
   pieceOfShip = new SpaceShip();
   spaceShipSpeed = 0;
   twinkle = new Star[500];
-  //spaceRock = new ArrayList <spaceRock>();
-  spaceRock = new Asteroid[25];
+  spaceRock = new ArrayList <Asteroid>();  //uses arraylist
+  //spaceRock = new Asteroid[25];
+  
   for(int i = 1; i < twinkle.length; i++)
   {
       twinkle[i] = new Star();
   }
-
+  /*
   for(int i = 1; i < spaceRock.length; i++)
   {
     spaceRock[i] = new Asteroid();
-    if(Math.random() < 0.25)
-    {
-      spaceRock[i].setX((int)(Math.random() * 300));
-      spaceRock[i].setY((int)(Math.random() * 800));
-    }
-
-    else if(Math.random() < 0.33)
-    {
-      spaceRock[i].setX((int)(Math.random() * 300) + 500);
-      spaceRock[i].setY((int)(Math.random() * 800));      
-    }
-
-    else if(Math.random() < 0.5)
-    {
-      spaceRock[i].setX((int)(Math.random() * 800));
-      spaceRock[i].setY((int)(Math.random() * 300));      
-    }
-
-    else
-    {
-      spaceRock[i].setX((int)(Math.random() * 800));
-      spaceRock[i].setY((int)(Math.random() * 300) + 500); 
-    }
-
-    if(spaceRock[i].getX() < 400)
-      spaceRock[i].setDirectionX(0.25);
-    else
-      spaceRock[i].setDirectionX(-0.25);
-
-    if(spaceRock[i].getY() < 400)
-      spaceRock[i].setDirectionY(0.25);
-    else
-      spaceRock[i].setDirectionY(-0.25);
-  }
-  /*
-  for(int i = 1; i <= 25; i++)
-  {
-    spaceRock.add(new Asteroid();)
-    if(Math.random() < 0.25)
-    {
-      spaceRock[i].setX((int)(Math.random() * 300));
-      spaceRock[i].setY((int)(Math.random() * 800));
-    }
-
-    else if(Math.random() < 0.33)
-    {
-      spaceRock[i].setX((int)(Math.random() * 300) + 500);
-      spaceRock[i].setY((int)(Math.random() * 800));      
-    }
-
-    else if(Math.random() < 0.5)
-    {
-      spaceRock[i].setX((int)(Math.random() * 800));
-      spaceRock[i].setY((int)(Math.random() * 300));      
-    }
-
-    else
-    {
-      spaceRock[i].setX((int)(Math.random() * 800));
-      spaceRock[i].setY((int)(Math.random() * 300) + 500); 
-    }
-
-    if(spaceRock[i].getX() < 400)
-      spaceRock[i].setDirectionX(0.25);
-    else
-      spaceRock[i].setDirectionX(-0.25);
-
-    if(spaceRock[i].getY() < 400)
-      spaceRock[i].setDirectionY(0.25);
-    else
-      spaceRock[i].setDirectionY(-0.25);
+    spaceRock[i].placement();
   }
   */
+  for(int i = 1; i <= 25; i++)  //uses arraylist
+  {
+    spaceRock.add(i, new Asteroid());
+    spaceRock[i].placement();
+  }
+  
 }
 public void draw() 
 {
@@ -221,6 +158,17 @@ class Asteroid extends Floater
   public void move()   //move the floater in the current direction of travel
   {   
     rotate(speedOfRotation);
+
+    if(myCenterX < 400)
+      myDirectionX = 0.25;
+    else
+      myDirectionX = -0.25;
+
+    if(myCenterY < 400)
+      myDirectionY = 0.25;
+    else
+      myDirectionY = -0.25;
+
     super.move();  
   } 
 
@@ -228,6 +176,33 @@ class Asteroid extends Floater
   {     
     //rotates the floater by a given number of degrees    
     myPointDirection += nDegreesOfRotation;   
+  }
+
+  public void placement()
+  {
+    if(Math.random() < 0.25)
+    {
+      myCenterX = ((int)(Math.random() * 300));
+      myCenterY = ((int)(Math.random() * 800));
+    }
+
+    else if(Math.random() < 0.33)
+    {
+      myCenterX = ((int)(Math.random() * 300) + 500);
+      myCenterY = ((int)(Math.random() * 800));      
+    }
+
+    else if(Math.random() < 0.5)
+    {
+      myCenterX = ((int)(Math.random() * 800));
+      myCenterY = ((int)(Math.random() * 300));      
+    }
+
+    else
+    {
+      myCenterX = ((int)(Math.random() * 800));
+      myCenterY = ((int)(Math.random() * 300) + 500); 
+    }
   }
 
 
