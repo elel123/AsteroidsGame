@@ -3,7 +3,6 @@ SpaceShip pieceOfShip;
 double spaceShipSpeed;
 Star [] twinkle;
 ArrayList <Asteroid> spaceRock;   //uses Arraylist
-//Asteroid [] spaceRock;
 public void setup() 
 {
   //your code here
@@ -12,23 +11,16 @@ public void setup()
   spaceShipSpeed = 0;
   twinkle = new Star[500];
   spaceRock = new ArrayList <Asteroid>();  //uses arraylist
-  //spaceRock = new Asteroid[25];
-  
+ 
   for(int i = 1; i < twinkle.length; i++)
   {
       twinkle[i] = new Star();
   }
-  /*
-  for(int i = 1; i < spaceRock.length; i++)
-  {
-    spaceRock[i] = new Asteroid();
-    spaceRock[i].placement();
-  }
-  */
-  for(int i = 1; i <= 25; i++)  //uses arraylist
+
+  for(int i = 0; i <= 25; i++)  //uses arraylist
   {
     spaceRock.add(i, new Asteroid());
-    spaceRock[i].placement();
+    spaceRock.get(i).placement();
   }
   
 }
@@ -47,10 +39,12 @@ public void draw()
     twinkle[i].show();
   }
   
-  for(int i = 1; i < spaceRock.length; i++)
+  for(int i = 1; i < spaceRock.size() - 1; i++)
   {
-    spaceRock[i].move();
-    spaceRock[i].show();
+    spaceRock.get(i).move();
+
+    if(dist(spaceRock.get(i).getX(), spaceRock.get(i).getY(), pieceOfShip.getX(), pieceOfShip.getY()) != 15)
+      spaceRock.get(i).show();
   }
 }
 
@@ -159,16 +153,16 @@ class Asteroid extends Floater
   {   
     rotate(speedOfRotation);
 
-    if(myCenterX < 400)
+    if(Math.random() < 0.5)
       myDirectionX = 0.25;
-    else
+    else 
       myDirectionX = -0.25;
 
-    if(myCenterY < 400)
+    if(Math.random() < 0.5)
       myDirectionY = 0.25;
-    else
+    else 
       myDirectionY = -0.25;
-
+        
     super.move();  
   } 
 
@@ -203,6 +197,8 @@ class Asteroid extends Floater
       myCenterX = ((int)(Math.random() * 800));
       myCenterY = ((int)(Math.random() * 300) + 500); 
     }
+
+
   }
 
 
