@@ -42,9 +42,12 @@ public void draw()
   for(int i = 1; i < spaceRock.size() - 1; i++)
   {
     spaceRock.get(i).move();
-
+    spaceRock.get(i).show();
+    if(spaceRock.get(i).collision())
+      spaceRock.remove(i);
+    /*
     if(dist(spaceRock.get(i).getX(), spaceRock.get(i).getY(), pieceOfShip.getX(), pieceOfShip.getY()) != 15)
-      spaceRock.get(i).show();
+    */
   }
 }
 
@@ -109,6 +112,7 @@ class Star
 class Asteroid extends Floater
 {
   private int speedOfRotation;
+  private int asteroidType;
 
   public Asteroid()
   {
@@ -136,6 +140,7 @@ class Asteroid extends Floater
       int[] yS = {6, 24, 32, 34, 36, 34, 22, 4, -8, -18, -32, -28, -32, -22, -2};
       xCorners = xS;
       yCorners = yS;
+      asteroidType = 2;
     }
     
     else
@@ -145,6 +150,7 @@ class Asteroid extends Floater
       int[] yS = {4, 8, 14, 12, 0, -10, -8};
       xCorners = xS;
       yCorners = yS;
+      asteroidType = 1;
     }
   
   }
@@ -199,6 +205,31 @@ class Asteroid extends Floater
     }
 
 
+  }
+
+  public boolean collision() 
+  {
+    if(asteroidType == 1)
+    {
+      if(dist((int)myCenterX, (int)myCenterY, pieceOfShip.getX(), pieceOfShip.getY()) <= 20)
+        return true;
+      else 
+        return false;
+      
+    }
+
+    else if(asteroidType == 2)
+    {
+      if(dist((int)myCenterX, (int)myCenterY, pieceOfShip.getX(), pieceOfShip.getY()) <= 40)
+        return true;
+      else 
+        return false;
+    }
+
+    else
+    {
+      return false;       
+    }     
   }
 
 
