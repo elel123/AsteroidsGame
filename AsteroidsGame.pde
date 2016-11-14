@@ -44,10 +44,18 @@ public void draw()
     spaceRock.get(i).move();
     spaceRock.get(i).show();
     if(spaceRock.get(i).collision())
+    {
+        /*
+        if(spaceRock.get(i).getType() == 2)
+        {
+          spaceRock.add(i, new Asteroid());
+          spaceRock.add(i, new Asteroid());
+          spaceRock.get(i+1).setX(spaceRock.get(i).getX());
+          spaceRock.get(i+1).setY(spaceRock.get(i).getY());          
+        }
+        */
       spaceRock.remove(i);
-    /*
-    if(dist(spaceRock.get(i).getX(), spaceRock.get(i).getY(), pieceOfShip.getX(), pieceOfShip.getY()) != 15)
-    */
+    }
   }
 }
 
@@ -232,6 +240,7 @@ class Asteroid extends Floater
     }     
   }
 
+  public int getType() {return asteroidType;}
 
   public void setX(int x) {myCenterX = x;}
   public int getX() {return (int)myCenterX;}
