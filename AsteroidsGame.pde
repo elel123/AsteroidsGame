@@ -21,6 +21,11 @@ public void setup()
   {
     spaceRock.add(i, new Asteroid());
     spaceRock.get(i).placement();
+    spaceRock.get(i).moveDirection();
+    if(spaceRock.get(i).collision())
+    {
+
+    }
   }
   
 }
@@ -45,15 +50,15 @@ public void draw()
     spaceRock.get(i).show();
     if(spaceRock.get(i).collision())
     {
-        /*
-        if(spaceRock.get(i).getType() == 2)
-        {
-          spaceRock.add(i, new Asteroid());
-          spaceRock.add(i, new Asteroid());
-          spaceRock.get(i+1).setX(spaceRock.get(i).getX());
-          spaceRock.get(i+1).setY(spaceRock.get(i).getY());          
-        }
-        */
+      if(spaceRock.get(i).getType() == 2)
+      {
+        spaceRock.add(i + 1, new Asteroid(1));
+        spaceRock.add(i + 1, new Asteroid(1));
+        spaceRock.get(i + 1).setX(spaceRock.get(i).getX());
+        spaceRock.get(i + 1).setY(spaceRock.get(i).getY());
+        spaceRock.get(i + 2).setX(spaceRock.get(i).getX());
+        spaceRock.get(i + 2).setY(spaceRock.get(i).getY());
+      }
       spaceRock.remove(i);
     }
   }
@@ -139,16 +144,16 @@ class Asteroid extends Floater
     myCenterY = 400;
     myDirectionX = 0;
     myDirectionY = 0;
-    myPointDirection = 0;  
+    myPointDirection = 0; 
+    asteroidType = (int)(Math.random() * 2) + 1; 
 
-    if(Math.random() < 0.25)
+    if(asteroidType == 2)
     {
       corners = 15;
       int[] xS = {28, 34, 22, 0, -8, -22, -30, -34, -28, -24, -12, -4, 6, 22, 36};
       int[] yS = {6, 24, 32, 34, 36, 34, 22, 4, -8, -18, -32, -28, -32, -22, -2};
       xCorners = xS;
       yCorners = yS;
-      asteroidType = 2;
     }
     
     else
@@ -158,15 +163,55 @@ class Asteroid extends Floater
       int[] yS = {4, 8, 14, 12, 0, -10, -8};
       xCorners = xS;
       yCorners = yS;
-      asteroidType = 1;
     }
-  
   }
 
+  public Asteroid(int n)
+  {
+    speedOfRotation = (int)(Math.random() * 4);
+    if(speedOfRotation <= 1)
+    {
+      speedOfRotation = 1;
+    } 
+    else 
+    {
+      speedOfRotation = -1;  
+    }
+
+    myColor = color(102, 51, 0);
+    myCenterX = 400;
+    myCenterY = 400;
+    myDirectionX = 0;
+    myDirectionY = 0;
+    myPointDirection = 0; 
+    asteroidType = n; 
+
+    if(asteroidType == 2)
+    {
+      corners = 15;
+      int[] xS = {28, 34, 22, 0, -8, -22, -30, -34, -28, -24, -12, -4, 6, 22, 36};
+      int[] yS = {6, 24, 32, 34, 36, 34, 22, 4, -8, -18, -32, -28, -32, -22, -2};
+      xCorners = xS;
+      yCorners = yS;
+    }
+    
+    else
+    {
+      corners = 7;
+      int[] xS = {20, 12, 8, -12, -20, -10, 16};
+      int[] yS = {4, 8, 14, 12, 0, -10, -8};
+      xCorners = xS;
+      yCorners = yS;
+    }
+}
   public void move()   //move the floater in the current direction of travel
   {   
     rotate(speedOfRotation);
+    super.move();  
+  } 
 
+  public void moveDirection()
+  {
     if(Math.random() < 0.5)
       myDirectionX = 0.25;
     else 
@@ -176,9 +221,7 @@ class Asteroid extends Floater
       myDirectionY = 0.25;
     else 
       myDirectionY = -0.25;
-        
-    super.move();  
-  } 
+  }
 
   public void rotate(int nDegreesOfRotation)   
   {     
@@ -241,6 +284,7 @@ class Asteroid extends Floater
   }
 
   public int getType() {return asteroidType;}
+  public void setType(int n) {asteroidType = n;}
 
   public void setX(int x) {myCenterX = x;}
   public int getX() {return (int)myCenterX;}
