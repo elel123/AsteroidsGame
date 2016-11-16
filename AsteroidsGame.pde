@@ -3,6 +3,7 @@ SpaceShip pieceOfShip;
 double spaceShipSpeed;
 Star [] twinkle;
 ArrayList <Asteroid> spaceRock;   //uses Arraylist
+ArrayList <Bullets> metalSphere;
 public void setup() 
 {
   //your code here
@@ -11,6 +12,7 @@ public void setup()
   spaceShipSpeed = 0;
   twinkle = new Star[500];
   spaceRock = new ArrayList <Asteroid>();  //uses arraylist
+  metalSphere = new ArrayList <Bullets>();
  
   for(int i = 1; i < twinkle.length; i++)
   {
@@ -54,14 +56,16 @@ public void draw()
       {
         spaceRock.add(i + 1, new Asteroid(1));
         spaceRock.add(i + 1, new Asteroid(1));
-        spaceRock.get(i + 1).setX(spaceRock.get(i).getX());
-        spaceRock.get(i + 1).setY(spaceRock.get(i).getY());
-        spaceRock.get(i + 2).setX(spaceRock.get(i).getX());
-        spaceRock.get(i + 2).setY(spaceRock.get(i).getY());
+        spaceRock.get(i + 1).setX(spaceRock.get(i).getX() - 10);
+        spaceRock.get(i + 1).setY(spaceRock.get(i).getY() - 10);
+        spaceRock.get(i + 2).setX(spaceRock.get(i).getX() + 10);
+        spaceRock.get(i + 2).setY(spaceRock.get(i).getY() + 10);
       }
       spaceRock.remove(i);
     }
   }
+
+  //metalSphere.show();
 }
 
 public void keyPressed()
@@ -103,8 +107,37 @@ public void keyPressed()
 }
 
 
+class Bullets extends Floater
+{
+  double dRadians;
+  public Bullets(SpaceShip theShip)
+  {
+    myCenterX = theShip.getX();
+    myCenterY = theShip.getY();
+    myPointDirection = theShip.getPointDirection();
+    dRadians = myPointDirection * (Math.PI/180);
+    myDirectionX = 5 * Math.cos(dRadians) + theShip.getDirectionX();
+    myDirectionY = 5 * Math.sin(dRadians) + theShip.getDirectionY();
+  }
 
+  public void setX(int x) {myCenterX = x;}
+  public int getX() {return (int) myCenterX;}   
+  public void setY(int y) {myCenterY = y;}
+  public int getY() {return (int) myCenterY;}
+  public void setDirectionX(double x) {myDirectionX = x;}   
+  public double getDirectionX() {return myDirectionX;}
+  public void setDirectionY(double y) {myDirectionY = y;}
+  public double getDirectionY() {return myDirectionY;}
+  public void setPointDirection(int degrees) {myPointDirection = degrees;}
+  public double getPointDirection() {return myPointDirection;}
 
+  public void show() 
+  {
+    fill(255, 0, 0);
+    ellipse((int)myCenterX, (int)myCenterY, 7, 7);  
+  }
+
+}
 
 class Star 
 {
@@ -140,8 +173,6 @@ class Asteroid extends Floater
     }
 
     myColor = color(102, 51, 0);
-    myCenterX = 400;
-    myCenterY = 400;
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0; 
