@@ -48,28 +48,36 @@ public void draw()
   
   for(int i = 1; i < spaceRock.size() - 1; i++)
   {
-    spaceRock.get(i).move();
-    spaceRock.get(i).show();
-    if(spaceRock.get(i).collision())
+    for(int j = 0; j < metalSphere.size(); j++)
     {
-      if(spaceRock.get(i).getType() == 2)
+      spaceRock.get(i).move();
+      spaceRock.get(i).show();
+      metalSphere.get(j).move();
+      metalSphere.get(j).show();
+      if(spaceRock.get(i).collision())
       {
-        spaceRock.add(i + 1, new Asteroid(1));
-        spaceRock.add(i + 1, new Asteroid(1));
-        spaceRock.get(i + 1).setX(spaceRock.get(i).getX() - 10);
-        spaceRock.get(i + 1).setY(spaceRock.get(i).getY() - 10);
-        spaceRock.get(i + 2).setX(spaceRock.get(i).getX() + 10);
-        spaceRock.get(i + 2).setY(spaceRock.get(i).getY() + 10);
+        if(spaceRock.get(i).getType() == 2)
+        {
+          spaceRock.add(i + 1, new Asteroid(1));
+          spaceRock.add(i + 1, new Asteroid(1));
+          spaceRock.get(i + 1).setX(spaceRock.get(i).getX() - 10);
+          spaceRock.get(i + 1).setY(spaceRock.get(i).getY() - 10);
+          spaceRock.get(i + 2).setX(spaceRock.get(i).getX() + 10);
+          spaceRock.get(i + 2).setY(spaceRock.get(i).getY() + 10);
+        }
+        spaceRock.remove(i);
+        metalSphere.remove(j);
       }
-      spaceRock.remove(i);
     }
   }
-
-  //metalSphere.show();
 }
-
 public void keyPressed()
 {
+  if(key == 'q')
+  {
+    metalSphere.add(new Bullets(pieceOfShip));
+  }
+
   if(key == 'a')
   {
     pieceOfShip.rotate(-10);
@@ -293,26 +301,26 @@ class Asteroid extends Floater
   {
     if(asteroidType == 1)
     {
-      if(dist((int)myCenterX, (int)myCenterY, pieceOfShip.getX(), pieceOfShip.getY()) <= 20)
-        return true;
-      else 
-        return false;
-      
+        if(dist((int)myCenterX, (int)myCenterY, metalSphere.get(i).getX(), metalSphere.get(i).getY()) <= 20)
+          return true;
+        else 
+          return false;
     }
-
     else if(asteroidType == 2)
     {
-      if(dist((int)myCenterX, (int)myCenterY, pieceOfShip.getX(), pieceOfShip.getY()) <= 40)
-        return true;
-      else 
-        return false;
-    }
 
-    else
-    {
+        if(dist((int)myCenterX, (int)myCenterY, metalSphere.get(i).getX(), metalSphere.get(i).getY()) <= 40)
+          return true;
+        else 
+          return false;
+      
+    }
+    else 
       return false;       
-    }     
-  }
+  
+
+  }     
+  
 
   public int getType() {return asteroidType;}
   public void setType(int n) {asteroidType = n;}
