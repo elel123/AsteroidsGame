@@ -48,12 +48,12 @@ public void draw()
   
   for(int i = 1; i < spaceRock.size() - 1; i++)
   {
-    for(int j = 0; j < metalSphere.size(); j++)
-    {
+    //for(int j = 0; j < metalSphere.size(); j++)
+    //{
       spaceRock.get(i).move();
       spaceRock.get(i).show();
-      metalSphere.get(j).move();
-      metalSphere.get(j).show();
+      //metalSphere.get(j).move();
+      //metalSphere.get(j).show();
       if(spaceRock.get(i).collision())
       {
         if(spaceRock.get(i).getType() == 2)
@@ -66,8 +66,8 @@ public void draw()
           spaceRock.get(i + 2).setY(spaceRock.get(i).getY() + 10);
         }
         spaceRock.remove(i);
-        metalSphere.remove(j);
-      }
+        //metalSphere.remove(j);
+      //}
     }
   }
 }
@@ -299,6 +299,7 @@ class Asteroid extends Floater
 
   public boolean collision() 
   {
+    /*
     if(asteroidType == 1)
     {
         if(dist((int)myCenterX, (int)myCenterY, metalSphere.get(i).getX(), metalSphere.get(i).getY()) <= 20)
@@ -317,7 +318,26 @@ class Asteroid extends Floater
     }
     else 
       return false;       
-  
+    */
+    if(asteroidType == 1)
+    {
+        if(dist((int)myCenterX, (int)myCenterY, pieceOfShip.getX(), pieceOfShip.getY()) <= 20)
+          return true;
+        else 
+          return false;
+    }
+    else if(asteroidType == 2)
+    {
+
+        if(dist((int)myCenterX, (int)myCenterY, pieceOfShip.getX(), pieceOfShip.getY()) <= 40)
+          return true;
+        else 
+          return false;
+      
+    }
+    else 
+      return false; 
+
 
   }     
   
