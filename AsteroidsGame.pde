@@ -24,10 +24,6 @@ public void setup()
     spaceRock.add(i, new Asteroid());
     spaceRock.get(i).placement();
     spaceRock.get(i).moveDirection();
-    if(spaceRock.get(i).collision())
-    {
-
-    }
   }
   
 }
@@ -45,16 +41,32 @@ public void draw()
     }
     twinkle[i].show();
   }
-  
-  for(int i = 1; i < spaceRock.size() - 1; i++)
+
+  for(int i = 0; i < metalSphere.size(); i++)
   {
-    //for(int j = 0; j < metalSphere.size(); j++)
-    //{
-      spaceRock.get(i).move();
-      spaceRock.get(i).show();
-      //metalSphere.get(j).move();
-      //metalSphere.get(j).show();
-      if(spaceRock.get(i).collision())
+    metalSphere.get(i).move();
+    metalSphere.get(i).show();
+  }  
+  for(int i = 0; i < spaceRock.size() - 1; i++)
+  {
+    spaceRock.get(i).move();
+    spaceRock.get(i).show();
+    if(spaceRock.get(i).collision())
+    {
+      if(spaceRock.get(i).getType() == 2)
+      {
+        spaceRock.add(i + 1, new Asteroid(1));
+        spaceRock.add(i + 1, new Asteroid(1));
+        spaceRock.get(i + 1).setX(spaceRock.get(i).getX() - 10);
+        spaceRock.get(i + 1).setY(spaceRock.get(i).getY() - 10);
+        spaceRock.get(i + 2).setX(spaceRock.get(i).getX() + 10);
+        spaceRock.get(i + 2).setY(spaceRock.get(i).getY() + 10);
+      }
+      spaceRock.remove(i);
+    }
+    for(int j = 0; j < metalSphere.size() - 1; j++)
+    {
+      if(spaceRock.get(i).bulletCollision())
       {
         if(spaceRock.get(i).getType() == 2)
         {
@@ -65,9 +77,10 @@ public void draw()
           spaceRock.get(i + 2).setX(spaceRock.get(i).getX() + 10);
           spaceRock.get(i + 2).setY(spaceRock.get(i).getY() + 10);
         }
+        metalSphere.remove(j);
         spaceRock.remove(i);
-        //metalSphere.remove(j);
-      //}
+        break;      
+      }
     }
   }
 }
@@ -299,26 +312,6 @@ class Asteroid extends Floater
 
   public boolean collision() 
   {
-    /*
-    if(asteroidType == 1)
-    {
-        if(dist((int)myCenterX, (int)myCenterY, metalSphere.get(i).getX(), metalSphere.get(i).getY()) <= 20)
-          return true;
-        else 
-          return false;
-    }
-    else if(asteroidType == 2)
-    {
-
-        if(dist((int)myCenterX, (int)myCenterY, metalSphere.get(i).getX(), metalSphere.get(i).getY()) <= 40)
-          return true;
-        else 
-          return false;
-      
-    }
-    else 
-      return false;       
-    */
     if(asteroidType == 1)
     {
         if(dist((int)myCenterX, (int)myCenterY, pieceOfShip.getX(), pieceOfShip.getY()) <= 20)
@@ -337,8 +330,27 @@ class Asteroid extends Floater
     }
     else 
       return false; 
+  }
 
+  public boolean bulletCollision()
+  {
+    
+    for(int i = 0; i < metalSphere.size(); i++)
+    {
+      if(asteroidType == 1)
+      {
+          if(dist((int)myCenterX, (int)myCenterY, metalSphere.get(i).getX(), metalSphere.get(i).getY()) <= 20)
+            return true;
+      }
+      else if(asteroidType == 2)
+      {
 
+          if(dist((int)myCenterX, (int)myCenterY, metalSphere.get(i).getX(), metalSphere.get(i).getY()) <= 40)
+            return true;
+        
+      }
+    }
+    return false;          
   }     
   
 
