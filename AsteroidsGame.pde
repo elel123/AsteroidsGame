@@ -19,7 +19,7 @@ public void setup()
       twinkle[i] = new Star();
   }
 
-  for(int i = 0; i <= 25; i++)  //uses arraylist
+  for(int i = 0; i < 25; i++)  //uses arraylist
   {
     spaceRock.add(i, new Asteroid());
     spaceRock.get(i).placement();
@@ -30,6 +30,7 @@ public void setup()
 public void draw() 
 {
   //your code here
+  int points = 0;
   background(0);
   pieceOfShip.move();
   pieceOfShip.show();
@@ -42,12 +43,12 @@ public void draw()
     twinkle[i].show();
   }
 
-  for(int i = 0; i < metalSphere.size(); i++)
+  for(int i = 0; i < metalSphere.size() - 1; i++)
   {
     metalSphere.get(i).move();
     metalSphere.get(i).show();
   }  
-  for(int i = 0; i < spaceRock.size() - 1; i++)
+  for(int i = 0; i < spaceRock.size(); i++)
   {
     spaceRock.get(i).move();
     spaceRock.get(i).show();
@@ -63,6 +64,7 @@ public void draw()
         spaceRock.get(i + 2).setY(spaceRock.get(i).getY() + 10);
       }
       spaceRock.remove(i);
+      points--;
     }
     for(int j = 0; j < metalSphere.size() - 1; j++)
     {
@@ -79,10 +81,13 @@ public void draw()
         }
         metalSphere.remove(j);
         spaceRock.remove(i);
+        points++;
         break;      
       }
     }
   }
+  fill(255);
+  text("score: " + points, 20, 20);
 }
 public void keyPressed()
 {
