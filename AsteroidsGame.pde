@@ -4,10 +4,12 @@ double spaceShipSpeed;
 Star [] twinkle;
 ArrayList <Asteroid> spaceRock;   //uses Arraylist
 ArrayList <Bullets> metalSphere;
+int points = 0;
 public void setup() 
 {
   //your code here
   size(800, 800);
+  //fullScreen();
   pieceOfShip = new SpaceShip();
   spaceShipSpeed = 0;
   twinkle = new Star[500];
@@ -30,7 +32,6 @@ public void setup()
 public void draw() 
 {
   //your code here
-  int points = 0;
   background(0);
   pieceOfShip.move();
   pieceOfShip.show();
@@ -51,6 +52,7 @@ public void draw()
   for(int i = 0; i < spaceRock.size(); i++)
   {
     spaceRock.get(i).move();
+    //spaceRock.get(i).moveDirection();
     spaceRock.get(i).show();
     if(spaceRock.get(i).collision())
     {
@@ -62,6 +64,10 @@ public void draw()
         spaceRock.get(i + 1).setY(spaceRock.get(i).getY() - 10);
         spaceRock.get(i + 2).setX(spaceRock.get(i).getX() + 10);
         spaceRock.get(i + 2).setY(spaceRock.get(i).getY() + 10);
+        spaceRock.get(i + 1).setDirectionX(Math.random() * 0.5 - 0.25);
+        spaceRock.get(i + 1).setDirectionY(Math.random() * 0.5 - 0.25);
+        spaceRock.get(i + 2).setDirectionX(Math.random() * 0.5 - 0.25);
+        spaceRock.get(i + 2).setDirectionY(Math.random() * 0.5 - 0.25);
       }
       spaceRock.remove(i);
       points--;
@@ -78,6 +84,11 @@ public void draw()
           spaceRock.get(i + 1).setY(spaceRock.get(i).getY() - 10);
           spaceRock.get(i + 2).setX(spaceRock.get(i).getX() + 10);
           spaceRock.get(i + 2).setY(spaceRock.get(i).getY() + 10);
+          spaceRock.get(i + 2).setY(spaceRock.get(i).getY() + 10);
+          spaceRock.get(i + 1).setDirectionX(Math.random() * 1 - 0.5);
+          spaceRock.get(i + 1).setDirectionY(Math.random() * 1 - 0.5);
+          spaceRock.get(i + 2).setDirectionX(Math.random() * 1 - 0.5);
+          spaceRock.get(i + 2).setDirectionY(Math.random() * 1 - 0.5);
         }
         metalSphere.remove(j);
         spaceRock.remove(i);
@@ -87,7 +98,8 @@ public void draw()
     }
   }
   fill(255);
-  text("score: " + points, 20, 20);
+  textSize(20);
+  text("score: " + points, 20, 30);
 }
 public void keyPressed()
 {
@@ -114,6 +126,9 @@ public void keyPressed()
     pieceOfShip.setPointDirection((int)(Math.random() * 360));
     pieceOfShip.setDirectionX(0);
     pieceOfShip.setDirectionY(0);
+
+    while(metalSphere.size() > 0)
+      metalSphere.remove(0);
 
 
   }
