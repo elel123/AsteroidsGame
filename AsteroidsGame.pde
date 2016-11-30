@@ -5,6 +5,7 @@ Star [] twinkle;
 ArrayList <Asteroid> spaceRock;   //uses Arraylist
 ArrayList <Bullets> metalSphere;
 int points = 0;
+float healthPercent = 1;
 public void setup() 
 {
   //your code here
@@ -33,26 +34,34 @@ public void draw()
 {
   //your code here
   background(0);
-  pieceOfShip.move();
-  pieceOfShip.show();
   for(int i = 1; i < twinkle.length; i++)
   {
     if(i % 20 == 0)
     {
       twinkle[i] = new Star();
     }
+    if(keyPressed && key == ' ')
+      stroke(0);
+    else 
+      stroke(255);
     twinkle[i].show();
   }
 
-  for(int i = 0; i < metalSphere.size() - 1; i++)
+  for(int i = 0; i < metalSphere.size(); i++)
   {
     metalSphere.get(i).move();
     metalSphere.get(i).show();
-  }  
+  } 
+
+  if(healthPercent > 0)
+  {
+    pieceOfShip.move();
+    pieceOfShip.show();
+  } 
+
   for(int i = 0; i < spaceRock.size(); i++)
   {
     spaceRock.get(i).move();
-    //spaceRock.get(i).moveDirection();
     spaceRock.get(i).show();
     if(spaceRock.get(i).collision())
     {
@@ -71,6 +80,7 @@ public void draw()
       }
       spaceRock.remove(i);
       points--;
+      healthPercent -= 0.05;
     }
     for(int j = 0; j < metalSphere.size() - 1; j++)
     {
@@ -100,12 +110,22 @@ public void draw()
   fill(255);
   textSize(20);
   text("score: " + points, 20, 30);
+  text("health:" + Math.round(healthPercent * 100) + " %", 20, 60);
+  if(healthPercent > 0)
+  {
+    noStroke();
+    fill(255, 0, 0);
+    rect(pieceOfShip.getX() - 14, pieceOfShip.getY() - 18, 30, 5);
+    fill(0, 255, 0);
+    rect(pieceOfShip.getX() - 14, pieceOfShip.getY() - 18, 30 * healthPercent, 5);
+  }
 }
 public void keyPressed()
 {
   if(key == 'q')
   {
-    metalSphere.add(new Bullets(pieceOfShip));
+    if(metalSphere.size() < 7)
+      metalSphere.add(new Bullets(pieceOfShip));
   }
 
   if(key == 'a')
@@ -141,9 +161,6 @@ public void keyPressed()
     
     else 
       spaceShipSpeed = 0;
-   
-
-
     pieceOfShip.accelerate(spaceShipSpeed);
 }
 
