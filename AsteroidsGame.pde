@@ -21,8 +21,10 @@ public void setup()
   {
       twinkle[i] = new Star();
   }
-
-  for(int i = 0; i < 25; i++)  //uses arraylist
+  spaceRock.add(0, new Asteroid(0));
+  spaceRock.get(0).placement();
+  spaceRock.get(0).moveDirection();
+  for(int i = 1; i < 25; i++)  //uses arraylist
   {
     spaceRock.add(i, new Asteroid());
     spaceRock.get(i).placement();
@@ -73,16 +75,16 @@ public void draw()
         spaceRock.get(i + 1).setY(spaceRock.get(i).getY() - 10);
         spaceRock.get(i + 2).setX(spaceRock.get(i).getX() + 10);
         spaceRock.get(i + 2).setY(spaceRock.get(i).getY() + 10);
-        spaceRock.get(i + 1).setDirectionX(Math.random() * 0.5 - 0.25);
-        spaceRock.get(i + 1).setDirectionY(Math.random() * 0.5 - 0.25);
-        spaceRock.get(i + 2).setDirectionX(Math.random() * 0.5 - 0.25);
-        spaceRock.get(i + 2).setDirectionY(Math.random() * 0.5 - 0.25);
+        spaceRock.get(i + 1).setDirectionX(Math.random() * 1 - 0.5);
+        spaceRock.get(i + 1).setDirectionY(Math.random() * 1 - 0.5);
+        spaceRock.get(i + 2).setDirectionX(Math.random() * 1 - 0.5);
+        spaceRock.get(i + 2).setDirectionY(Math.random() * 1 - 0.5);
       }
       spaceRock.remove(i);
       points--;
       healthPercent -= 0.05;
     }
-    for(int j = 0; j < metalSphere.size() - 1; j++)
+    for(int j = 0; j < metalSphere.size(); j++)
     {
       if(spaceRock.get(i).bulletCollision())
       {
@@ -99,10 +101,22 @@ public void draw()
           spaceRock.get(i + 1).setDirectionY(Math.random() * 1 - 0.5);
           spaceRock.get(i + 2).setDirectionX(Math.random() * 1 - 0.5);
           spaceRock.get(i + 2).setDirectionY(Math.random() * 1 - 0.5);
+          spaceRock.remove(i);
+          points++;
+        }
+        else if(spaceRock.get(i).getType() == 1)
+        {
+          spaceRock.remove(i);
+          points++;
+        }
+        else if(spaceRock.get(i).getType() == 0)
+        {
+          spaceRock.get(i).setTimesHit(1);
+          if(spaceRock.get(i).getTimesHit() == 5)
+            spaceRock.remove(i);
+            points += 5;
         }
         metalSphere.remove(j);
-        spaceRock.remove(i);
-        points++;
         break;      
       }
     }
@@ -217,7 +231,7 @@ class Asteroid extends Floater
 {
   private int speedOfRotation;
   private int asteroidType;
-
+  private int timesHit;
   public Asteroid()
   {
     speedOfRotation = (int)(Math.random() * 4);
@@ -235,7 +249,7 @@ class Asteroid extends Floater
     myDirectionY = 0;
     myPointDirection = 0; 
     asteroidType = (int)(Math.random() * 2) + 1; 
-
+    timesHit = 0;
     if(asteroidType == 2)
     {
       corners = 15;
@@ -272,7 +286,8 @@ class Asteroid extends Floater
     myCenterY = 400;
     myDirectionX = 0;
     myDirectionY = 0;
-    myPointDirection = 0; 
+    myPointDirection = 0;
+    timesHit = 0; 
     asteroidType = n; 
 
     if(asteroidType == 2)
@@ -284,13 +299,23 @@ class Asteroid extends Floater
       yCorners = yS;
     }
     
-    else
+    else if(asteroidType == 1)
     {
       corners = 7;
       int[] xS = {20, 12, 8, -12, -20, -10, 16};
       int[] yS = {4, 8, 14, 12, 0, -10, -8};
       xCorners = xS;
       yCorners = yS;
+    }
+
+    else if (asteroidType == 0) 
+    {
+      corners = 9;
+      int[] xS = {0, 5, 15, 5, 0, -5, -15, -5, 0};
+      int[] yS = {15, 5, 0, -5, -15, -5, 0, 5, 15};
+      xCorners = xS;
+      yCorners = yS;
+      myColor = color(0, 0, 255);     
     }
 }
   public void move()   //move the floater in the current direction of travel
@@ -362,8 +387,14 @@ class Asteroid extends Floater
         if(dist((int)myCenterX, (int)myCenterY, pieceOfShip.getX(), pieceOfShip.getY()) <= 40)
           return true;
         else 
-          return false;
-      
+          return false;      
+    }
+    else if(asteroidType == 0)
+    {
+      if(dist((int)myCenterX, (int)myCenterY, pieceOfShip.getX(), pieceOfShip.getY()) <= 16)
+        return true;
+      else 
+        return false;         
     }
     else 
       return false; 
@@ -371,7 +402,6 @@ class Asteroid extends Floater
 
   public boolean bulletCollision()
   {
-    
     for(int i = 0; i < metalSphere.size(); i++)
     {
       if(asteroidType == 1)
@@ -383,8 +413,12 @@ class Asteroid extends Floater
       {
 
           if(dist((int)myCenterX, (int)myCenterY, metalSphere.get(i).getX(), metalSphere.get(i).getY()) <= 40)
-            return true;
-        
+            return true;        
+      }
+      else if(asteroidType == 0)
+      {
+        if(dist((int)myCenterX, (int)myCenterY, metalSphere.get(i).getX(), metalSphere.get(i).getY()) <= 16)
+          return true;        
       }
     }
     return false;          
@@ -393,6 +427,9 @@ class Asteroid extends Floater
 
   public int getType() {return asteroidType;}
   public void setType(int n) {asteroidType = n;}
+  public void setColor(int r, int g, int b) {myColor = color(r, g, b);}
+  public void setTimesHit(int add) {timesHit += add;}
+  public int getTimesHit() {return timesHit;}
 
   public void setX(int x) {myCenterX = x;}
   public int getX() {return (int)myCenterX;}
