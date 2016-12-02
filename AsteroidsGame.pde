@@ -6,10 +6,11 @@ ArrayList <Asteroid> spaceRock;   //uses Arraylist
 ArrayList <Bullets> metalSphere;
 int points = 0;
 float healthPercent = 1;
+boolean hyp = false;
 public void setup() 
 {
   //your code here
-  size(800, 800);
+  size(1000, 900);
   //fullScreen();
   pieceOfShip = new SpaceShip();
   spaceShipSpeed = 0;
@@ -21,14 +22,24 @@ public void setup()
   {
       twinkle[i] = new Star();
   }
-  spaceRock.add(0, new Asteroid(0));
-  spaceRock.get(0).placement();
-  spaceRock.get(0).moveDirection();
-  for(int i = 1; i < 25; i++)  //uses arraylist
+
+  for(int i = 0; i < 50; i++)  //uses arraylist
   {
     spaceRock.add(i, new Asteroid());
+    if(i % 10 == 0)
+      spaceRock.set(i, new Asteroid(0));
     spaceRock.get(i).placement();
     spaceRock.get(i).moveDirection();
+  }
+  if(points % 20 == 0 && points > 0)
+  {
+    healthPercent += 0.3;
+    for(int i = 0; i < 5; i++)
+    {
+      spaceRock.add(spaceRock.size(), new Asteroid());
+      spaceRock.get(i).placement();
+      spaceRock.get(i).moveDirection();
+    }
   }
   
 }
@@ -79,10 +90,24 @@ public void draw()
         spaceRock.get(i + 1).setDirectionY(Math.random() * 1 - 0.5);
         spaceRock.get(i + 2).setDirectionX(Math.random() * 1 - 0.5);
         spaceRock.get(i + 2).setDirectionY(Math.random() * 1 - 0.5);
+        spaceRock.remove(i);
+        points -= 2;
+        healthPercent -= 0.4;
       }
-      spaceRock.remove(i);
-      points--;
-      healthPercent -= 0.05;
+      else if(spaceRock.get(i).getType() == 1)
+      {
+        spaceRock.remove(i);
+        points--;
+        healthPercent -= 0.2;
+      }
+      else if(spaceRock.get(i).getType() == 0)
+      {
+        spaceRock.get(i).setX((int)(Math.random() * 1000));
+        spaceRock.get(i).setY((int)(Math.random() * 900));        
+        points -= 5;
+        healthPercent -= 0.4;
+      }
+
     }
     for(int j = 0; j < metalSphere.size(); j++)
     {
@@ -113,8 +138,11 @@ public void draw()
         {
           spaceRock.get(i).setTimesHit(1);
           if(spaceRock.get(i).getTimesHit() == 5)
+          {
             spaceRock.remove(i);
             points += 5;
+            healthPercent += 0.1;
+          }
         }
         metalSphere.remove(j);
         break;      
@@ -125,20 +153,25 @@ public void draw()
   textSize(20);
   text("score: " + points, 20, 30);
   text("health:" + Math.round(healthPercent * 100) + " %", 20, 60);
-  if(healthPercent > 0)
+  if(healthPercent > 0 && hyp == false && healthPercent <= 1)
   {
     noStroke();
     fill(255, 0, 0);
-    rect(pieceOfShip.getX() - 14, pieceOfShip.getY() - 18, 30, 5);
+    rect(pieceOfShip.getX() - 15, pieceOfShip.getY() - 18, 30, 5);
     fill(0, 255, 0);
-    rect(pieceOfShip.getX() - 14, pieceOfShip.getY() - 18, 30 * healthPercent, 5);
+    rect(pieceOfShip.getX() - 15, pieceOfShip.getY() - 18, 30 * healthPercent, 5);
+  }
+  else if(healthPercent > 1)
+  {
+    fill(255);
+    rect(pieceOfShip.getX() - 14, pieceOfShip.getY() - 18, 30, 5);    
   }
 }
 public void keyPressed()
 {
   if(key == 'q')
   {
-    if(metalSphere.size() < 7)
+    if(metalSphere.size() < 5)
       metalSphere.add(new Bullets(pieceOfShip));
   }
 
@@ -164,7 +197,7 @@ public void keyPressed()
     while(metalSphere.size() > 0)
       metalSphere.remove(0);
 
-
+    hyp = true;
   }
 
     if(key == 'w')
@@ -176,6 +209,11 @@ public void keyPressed()
     else 
       spaceShipSpeed = 0;
     pieceOfShip.accelerate(spaceShipSpeed);
+}
+
+public void keyReleased()
+{
+  hyp = false;
 }
 
 
@@ -216,8 +254,8 @@ class Star
   private int myX, myY;
   public Star()
   {
-    myX = (int)(Math.random() * 800);
-    myY = (int)(Math.random() * 800);
+    myX = (int)(Math.random() * 1000);
+    myY = (int)(Math.random() * 900);
   }
 
   public void show()
@@ -327,14 +365,14 @@ class Asteroid extends Floater
   public void moveDirection()
   {
     if(Math.random() < 0.5)
-      myDirectionX = 0.25;
+      myDirectionX = 0.5;
     else 
-      myDirectionX = -0.25;
+      myDirectionX = -0.5;
 
     if(Math.random() < 0.5)
-      myDirectionY = 0.25;
+      myDirectionY = 0.5;
     else 
-      myDirectionY = -0.25;
+      myDirectionY = -0.5;
   }
 
   public void rotate(int nDegreesOfRotation)   
