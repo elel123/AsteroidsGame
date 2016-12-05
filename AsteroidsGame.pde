@@ -7,10 +7,11 @@ ArrayList <Bullets> metalSphere;
 int points = 0;
 float healthPercent = 1;
 boolean hyp = false;
+boolean dead = false;;
 public void setup() 
 {
   //your code here
-  size(1000, 900);
+  size(1000, 800);
   //fullScreen();
   pieceOfShip = new SpaceShip();
   spaceShipSpeed = 0;
@@ -91,7 +92,7 @@ public void draw()
         spaceRock.get(i + 2).setDirectionX(Math.random() * 1 - 0.5);
         spaceRock.get(i + 2).setDirectionY(Math.random() * 1 - 0.5);
         spaceRock.remove(i);
-        points -= 2;
+        points -= 5;
         healthPercent -= 0.4;
       }
       else if(spaceRock.get(i).getType() == 1)
@@ -102,10 +103,10 @@ public void draw()
       }
       else if(spaceRock.get(i).getType() == 0)
       {
-        spaceRock.get(i).setX((int)(Math.random() * 1000));
-        spaceRock.get(i).setY((int)(Math.random() * 900));        
+        spaceRock.get(i).setX((int)(Math.random() * width));
+        spaceRock.get(i).setY((int)(Math.random() * height));        
         points -= 5;
-        healthPercent -= 0.4;
+        healthPercent -= 0.2;
       }
 
     }
@@ -141,7 +142,7 @@ public void draw()
           {
             spaceRock.remove(i);
             points += 5;
-            healthPercent += 0.1;
+            healthPercent += 0.25;
           }
         }
         metalSphere.remove(j);
@@ -153,7 +154,7 @@ public void draw()
   textSize(20);
   text("score: " + points, 20, 30);
   text("health:" + Math.round(healthPercent * 100) + " %", 20, 60);
-  if(healthPercent > 0 && hyp == false && healthPercent <= 1)
+  if(dead == false && hyp == false && healthPercent <= 1)
   {
     noStroke();
     fill(255, 0, 0);
@@ -161,19 +162,38 @@ public void draw()
     fill(0, 255, 0);
     rect(pieceOfShip.getX() - 15, pieceOfShip.getY() - 18, 30 * healthPercent, 5);
   }
-  else if(healthPercent > 1)
+  else if(healthPercent > 1 && hyp == false)
   {
-    fill(255);
+    fill(255, 255, 0);
+    stroke(255);
     rect(pieceOfShip.getX() - 14, pieceOfShip.getY() - 18, 30, 5);    
+  }
+  if(healthPercent < 0)
+  {
+    int chance = (int)(Math.random() * 3) + 1;
+    dead = true;
+    textSize(40);
+    fill(0);
+    rect(-1, -1, width + 1, height + 1);
+    fill(255);
+    text(" GAME OVER \n You just died! \n \nHint: Blue Stars give you\n health when you \nshoot it with a bullet.  ", 360, 200);
   }
 }
 public void keyPressed()
 {
   if(key == 'q')
   {
-    if(metalSphere.size() < 5)
+    if(dead == false)
+    {
+      if(metalSphere.size() < 7)
+        metalSphere.add(new Bullets(pieceOfShip));
+    }
+    if(dead == true)
+    {
       metalSphere.add(new Bullets(pieceOfShip));
+    }
   }
+
 
   if(key == 'a')
   {
@@ -188,12 +208,23 @@ public void keyPressed()
   if(key == ' ')
   {
     pieceOfShip.accelerate(0);
-    pieceOfShip.setX((int)(Math.random() * 800));
-    pieceOfShip.setY((int)(Math.random() * 800));
+    pieceOfShip.setX((int)(Math.random() * width));
+    pieceOfShip.setY((int)(Math.random() * height));
     pieceOfShip.setPointDirection((int)(Math.random() * 360));
     pieceOfShip.setDirectionX(0);
     pieceOfShip.setDirectionY(0);
-
+    for(int i = 0; i < spaceRock.size(); i++)
+    {
+      if(dist(pieceOfShip.getX(), pieceOfShip.getY(), spaceRock.get(i).getX(), spaceRock.get(i).getY()) <= 40)
+      {
+        if(spaceRock.get(i).getType() == 2)
+        {
+          pieceOfShip.setX((int)(Math.random() * width));
+          pieceOfShip.setY((int)(Math.random() * height));
+          healthPercent += 0.12;    
+        }  
+      }
+    }
     while(metalSphere.size() > 0)
       metalSphere.remove(0);
 
@@ -254,8 +285,8 @@ class Star
   private int myX, myY;
   public Star()
   {
-    myX = (int)(Math.random() * 1000);
-    myY = (int)(Math.random() * 900);
+    myX = (int)(Math.random() * width);
+    myY = (int)(Math.random() * height);
   }
 
   public void show()
@@ -386,24 +417,24 @@ class Asteroid extends Floater
     if(Math.random() < 0.25)
     {
       myCenterX = ((int)(Math.random() * 300));
-      myCenterY = ((int)(Math.random() * 800));
+      myCenterY = ((int)(Math.random() * height));
     }
 
     else if(Math.random() < 0.33)
     {
       myCenterX = ((int)(Math.random() * 300) + 500);
-      myCenterY = ((int)(Math.random() * 800));      
+      myCenterY = ((int)(Math.random() * height));      
     }
 
     else if(Math.random() < 0.5)
     {
-      myCenterX = ((int)(Math.random() * 800));
+      myCenterX = ((int)(Math.random() * width));
       myCenterY = ((int)(Math.random() * 300));      
     }
 
     else
     {
-      myCenterX = ((int)(Math.random() * 800));
+      myCenterX = ((int)(Math.random() * width));
       myCenterY = ((int)(Math.random() * 300) + 500); 
     }
 
