@@ -7,7 +7,8 @@ ArrayList <Bullets> metalSphere;
 int points = 0;
 float healthPercent = 1;
 boolean hyp = false;
-boolean dead = false;;
+boolean dead = false;
+int messageChance = (int)(Math.random() * 3) + 1;
 public void setup() 
 {
   //your code here
@@ -168,15 +169,50 @@ public void draw()
     stroke(255);
     rect(pieceOfShip.getX() - 14, pieceOfShip.getY() - 18, 30, 5);    
   }
-  if(healthPercent < 0)
+  if(healthPercent <= 0)
   {
-    int chance = (int)(Math.random() * 3) + 1;
     dead = true;
     textSize(40);
     fill(0);
     rect(-1, -1, width + 1, height + 1);
     fill(255);
-    text(" GAME OVER \n You just died! \n \nHint: Blue Stars give you\n health when you \nshoot it with a bullet.  ", 360, 200);
+    if(messageChance == 1)
+      text("Hint: Blue Stars give you\n health when you \nshoot it with a bullet.", 340, 400);
+    else if(messageChance == 2)
+      text("Hint: It takes multiple shots \nto destroy a blue star.", 340, 400);
+    else if (messageChance == 3) 
+      text("Hint: Shooting blue stars not only\ngives more points,\nbut also gives health back.", 340, 400);
+    textSize(60);
+    text("GAME OVER\nYou just died!", 350, 150);
+    text("Score: " + points, 350, 320);
+    while(spaceRock.size() > 0)
+      spaceRock.remove(0);
+    while(metalSphere.size() > 0)
+      metalSphere.remove(0);
+    fill(0, 255, 0);
+    rect(width * 0.33, height * 0.75, 300, 100);
+    fill(0);
+    textSize(40);
+    text("Play Again?", width * 0.33 + 40, height * 0.75 + 70);
+    if(mousePressed && mouseX < (width * 0.33 + 300) && mouseX > (width * 0.33) && mouseY < (height * 0.75 + 100) && mouseY > (height * 0.75))
+    {
+      dead = false;
+      healthPercent = 1;
+      points = 0;
+      for(int i = 0; i < 50; i++)  //uses arraylist
+      {
+        spaceRock.add(i, new Asteroid());
+        if(i % 10 == 0)
+          spaceRock.set(i, new Asteroid(0));
+        spaceRock.get(i).placement();
+        spaceRock.get(i).moveDirection();
+      }
+      pieceOfShip.setX(width/2);
+      pieceOfShip.setY(height/2);
+      pieceOfShip.setDirectionX(0);
+      pieceOfShip.setDirectionY(0);
+      pieceOfShip.setPointDirection(0);
+    }
   }
 }
 public void keyPressed()
