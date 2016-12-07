@@ -9,6 +9,7 @@ float healthPercent = 1;
 boolean hyp = false;
 boolean dead = false;
 int messageChance = (int)(Math.random() * 3) + 1;
+int asteroidNum = 10;
 public void setup() 
 {
   //your code here
@@ -25,7 +26,7 @@ public void setup()
       twinkle[i] = new Star();
   }
 
-  for(int i = 0; i < 50; i++)  //uses arraylist
+  for(int i = 0; i < 10; i++)  //uses arraylist
   {
     spaceRock.add(i, new Asteroid());
     if(i % 10 == 0)
@@ -177,18 +178,16 @@ public void draw()
     rect(-1, -1, width + 1, height + 1);
     fill(255);
     if(messageChance == 1)
-      text("Hint: Blue Stars give you\n health when you \nshoot it with a bullet.", 340, 400);
+      text("Hint: Blue Stars give you\n health when you \nshoot it with a bullet.", 300, 400);
     else if(messageChance == 2)
-      text("Hint: It takes multiple shots \nto destroy a blue star.", 340, 400);
+      text("Hint: It takes multiple shots \nto destroy a blue star.", 300, 400);
     else if (messageChance == 3) 
-      text("Hint: Shooting blue stars not only\ngives more points,\nbut also gives health back.", 340, 400);
+      text("Hint: Shooting blue stars not only\ngives more points,\nbut also gives health back.", 300, 400);
     textSize(60);
     text("GAME OVER\nYou just died!", 350, 150);
     text("Score: " + points, 350, 320);
     while(spaceRock.size() > 0)
       spaceRock.remove(0);
-    while(metalSphere.size() > 0)
-      metalSphere.remove(0);
     fill(0, 255, 0);
     rect(width * 0.33, height * 0.75, 300, 100);
     fill(0);
@@ -212,7 +211,69 @@ public void draw()
       pieceOfShip.setDirectionX(0);
       pieceOfShip.setDirectionY(0);
       pieceOfShip.setPointDirection(0);
+      messageChance = (int)(Math.random() * 3) + 1;
     }
+  }
+  if(spaceRock.size() == 0 && dead == false)
+  {
+    textSize(40);
+    fill(0);
+    rect(-1, -1, width + 1, height + 1);
+    fill(255);
+    text("You win!", 350, 150);
+    text("Score: " + points, 350, 320);
+    textSize(20);
+    text("Number of Asteroids", 10, 600);
+    fill(255);
+    rect(10, 660, 50, 50, 5); // - button
+    rect(110, 660, 50, 50, 5); // + button
+    text(asteroidNum, 73, 690);
+    fill(0);
+    noStroke();
+    rect(10, 685, 50, 5);
+    rect(110, 685, 50, 5);
+    rect(132, 660, 5, 50);
+    if(mousePressed && mouseX < 60 && mouseX > 10 && mouseY < 710 && mouseY > 660)
+    {
+      if(asteroidNum > 1)
+        asteroidNum--;
+      fill(255);
+      rect(10, 660, 50, 50, 5);
+    }
+    if(mousePressed && mouseX < 160 && mouseX > 110 && mouseY < 710 && mouseY > 660)
+    {
+      asteroidNum++;
+      fill(255);  
+      rect(110, 660, 50, 50, 5); 
+    }
+    while(metalSphere.size() > 0)
+      metalSphere.remove(0);
+    fill(0, 255, 0);
+    rect(width * 0.33, height * 0.75, 300, 100);
+    fill(0);
+    textSize(45);
+    text("Play Again?", width * 0.33 + 40, height * 0.75 + 70);
+    if(mousePressed && mouseX < (width * 0.33 + 300) && mouseX > (width * 0.33) && mouseY < (height * 0.75 + 100) && mouseY > (height * 0.75))
+    {
+      dead = false;
+      healthPercent = 1;
+      points = 0;
+      for(int i = 0; i <= asteroidNum; i++)  //uses arraylist
+      {
+        spaceRock.add(i, new Asteroid());
+        if(i % 10 == 0)
+          spaceRock.set(i, new Asteroid(0));
+        spaceRock.get(i).placement();
+        spaceRock.get(i).moveDirection();
+      }
+      pieceOfShip.setX(width/2);
+      pieceOfShip.setY(height/2);
+      pieceOfShip.setDirectionX(0);
+      pieceOfShip.setDirectionY(0);
+      pieceOfShip.setPointDirection(0);
+      messageChance = (int)(Math.random() * 3) + 1;
+    }
+
   }
 }
 public void keyPressed()
