@@ -26,7 +26,7 @@ public void setup()
       twinkle[i] = new Star();
   }
 
-  for(int i = 0; i < 10; i++)  //uses arraylist
+  for(int i = 0; i < 50; i++)  //uses arraylist
   {
     spaceRock.add(i, new Asteroid());
     if(i % 10 == 0)
@@ -198,7 +198,7 @@ public void draw()
       dead = false;
       healthPercent = 1;
       points = 0;
-      for(int i = 0; i < 50; i++)  //uses arraylist
+      for(int i = 0; i <= asteroidNum; i++)  //uses arraylist
       {
         spaceRock.add(i, new Asteroid());
         if(i % 10 == 0)
@@ -213,6 +213,7 @@ public void draw()
       pieceOfShip.setPointDirection(0);
       messageChance = (int)(Math.random() * 3) + 1;
     }
+
   }
   if(spaceRock.size() == 0 && dead == false)
   {
